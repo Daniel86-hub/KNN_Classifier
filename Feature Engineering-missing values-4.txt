@@ -1,0 +1,2351 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Ordinal Number Encoding\n",
+    "\n",
+    "Categories can be assigned ranks"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import datetime"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "today_date=datetime.datetime.today()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "datetime.datetime(2021, 5, 3, 16, 54, 51, 129465)"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "today_date"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "datetime.datetime(2021, 5, 1, 16, 54, 51, 129465)"
+      ]
+     },
+     "execution_count": 4,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "today_date-datetime.timedelta(2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "days=[today_date-datetime.timedelta(x) for x in range(0,15)]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import pandas as pd"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "data=pd.DataFrame(days)\n",
+    "data.columns=['Day']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Day</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2021-05-03 16:54:51.129465</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2021-05-02 16:54:51.129465</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2021-05-01 16:54:51.129465</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>2021-04-30 16:54:51.129465</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>2021-04-29 16:54:51.129465</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "                         Day\n",
+       "0 2021-05-03 16:54:51.129465\n",
+       "1 2021-05-02 16:54:51.129465\n",
+       "2 2021-05-01 16:54:51.129465\n",
+       "3 2021-04-30 16:54:51.129465\n",
+       "4 2021-04-29 16:54:51.129465"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0    2021-05-03\n",
+       "1    2021-05-02\n",
+       "2    2021-05-01\n",
+       "3    2021-04-30\n",
+       "4    2021-04-29\n",
+       "Name: Day, dtype: object"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data['Day'].dt.date.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>year</th>\n",
+       "      <th>week</th>\n",
+       "      <th>day</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>18</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>17</td>\n",
+       "      <td>7</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>17</td>\n",
+       "      <td>6</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>17</td>\n",
+       "      <td>5</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>17</td>\n",
+       "      <td>4</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   year  week  day\n",
+       "0  2021    18    1\n",
+       "1  2021    17    7\n",
+       "2  2021    17    6\n",
+       "3  2021    17    5\n",
+       "4  2021    17    4"
+      ]
+     },
+     "execution_count": 10,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "data['Day'].dt.isocalendar().head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Count or Frequency Encoding"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import os \n",
+    "os.chdir(\"E:\\KAGGLE\\KAGGLE\\classified data\\Feature Engineering_1\")"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "'E:\\\\KAGGLE\\\\KAGGLE\\\\classified data\\\\Feature Engineering_1'"
+      ]
+     },
+     "execution_count": 12,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "os.getcwd()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>0</th>\n",
+       "      <th>1</th>\n",
+       "      <th>2</th>\n",
+       "      <th>3</th>\n",
+       "      <th>4</th>\n",
+       "      <th>5</th>\n",
+       "      <th>6</th>\n",
+       "      <th>7</th>\n",
+       "      <th>8</th>\n",
+       "      <th>9</th>\n",
+       "      <th>10</th>\n",
+       "      <th>11</th>\n",
+       "      <th>12</th>\n",
+       "      <th>13</th>\n",
+       "      <th>14</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>age</td>\n",
+       "      <td>workclass</td>\n",
+       "      <td>fnlwgt</td>\n",
+       "      <td>education</td>\n",
+       "      <td>educational-num</td>\n",
+       "      <td>marital-status</td>\n",
+       "      <td>occupation</td>\n",
+       "      <td>relationship</td>\n",
+       "      <td>race</td>\n",
+       "      <td>gender</td>\n",
+       "      <td>capital-gain</td>\n",
+       "      <td>capital-loss</td>\n",
+       "      <td>hours-per-week</td>\n",
+       "      <td>native-country</td>\n",
+       "      <td>income</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>25</td>\n",
+       "      <td>Private</td>\n",
+       "      <td>226802</td>\n",
+       "      <td>11th</td>\n",
+       "      <td>7</td>\n",
+       "      <td>Never-married</td>\n",
+       "      <td>Machine-op-inspct</td>\n",
+       "      <td>Own-child</td>\n",
+       "      <td>Black</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>40</td>\n",
+       "      <td>United-States</td>\n",
+       "      <td>&lt;=50K</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>38</td>\n",
+       "      <td>Private</td>\n",
+       "      <td>89814</td>\n",
+       "      <td>HS-grad</td>\n",
+       "      <td>9</td>\n",
+       "      <td>Married-civ-spouse</td>\n",
+       "      <td>Farming-fishing</td>\n",
+       "      <td>Husband</td>\n",
+       "      <td>White</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>50</td>\n",
+       "      <td>United-States</td>\n",
+       "      <td>&lt;=50K</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>28</td>\n",
+       "      <td>Local-gov</td>\n",
+       "      <td>336951</td>\n",
+       "      <td>Assoc-acdm</td>\n",
+       "      <td>12</td>\n",
+       "      <td>Married-civ-spouse</td>\n",
+       "      <td>Protective-serv</td>\n",
+       "      <td>Husband</td>\n",
+       "      <td>White</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>40</td>\n",
+       "      <td>United-States</td>\n",
+       "      <td>&gt;50K</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>44</td>\n",
+       "      <td>Private</td>\n",
+       "      <td>160323</td>\n",
+       "      <td>Some-college</td>\n",
+       "      <td>10</td>\n",
+       "      <td>Married-civ-spouse</td>\n",
+       "      <td>Machine-op-inspct</td>\n",
+       "      <td>Husband</td>\n",
+       "      <td>Black</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>7688</td>\n",
+       "      <td>0</td>\n",
+       "      <td>40</td>\n",
+       "      <td>United-States</td>\n",
+       "      <td>&gt;50K</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "    0          1       2             3                4                   5   \\\n",
+       "0  age  workclass  fnlwgt     education  educational-num      marital-status   \n",
+       "1   25    Private  226802          11th                7       Never-married   \n",
+       "2   38    Private   89814       HS-grad                9  Married-civ-spouse   \n",
+       "3   28  Local-gov  336951    Assoc-acdm               12  Married-civ-spouse   \n",
+       "4   44    Private  160323  Some-college               10  Married-civ-spouse   \n",
+       "\n",
+       "                  6             7      8       9             10            11  \\\n",
+       "0         occupation  relationship   race  gender  capital-gain  capital-loss   \n",
+       "1  Machine-op-inspct     Own-child  Black    Male             0             0   \n",
+       "2    Farming-fishing       Husband  White    Male             0             0   \n",
+       "3    Protective-serv       Husband  White    Male             0             0   \n",
+       "4  Machine-op-inspct       Husband  Black    Male          7688             0   \n",
+       "\n",
+       "               12              13      14  \n",
+       "0  hours-per-week  native-country  income  \n",
+       "1              40   United-States   <=50K  \n",
+       "2              50   United-States   <=50K  \n",
+       "3              40   United-States    >50K  \n",
+       "4              40   United-States    >50K  "
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df=pd.read_csv(\"adult_data.csv\",header=None,index_col=None)\n",
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>index</th>\n",
+       "      <th>0</th>\n",
+       "      <th>1</th>\n",
+       "      <th>2</th>\n",
+       "      <th>3</th>\n",
+       "      <th>4</th>\n",
+       "      <th>5</th>\n",
+       "      <th>6</th>\n",
+       "      <th>7</th>\n",
+       "      <th>8</th>\n",
+       "      <th>9</th>\n",
+       "      <th>10</th>\n",
+       "      <th>11</th>\n",
+       "      <th>12</th>\n",
+       "      <th>13</th>\n",
+       "      <th>14</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>1</td>\n",
+       "      <td>25</td>\n",
+       "      <td>Private</td>\n",
+       "      <td>226802</td>\n",
+       "      <td>11th</td>\n",
+       "      <td>7</td>\n",
+       "      <td>Never-married</td>\n",
+       "      <td>Machine-op-inspct</td>\n",
+       "      <td>Own-child</td>\n",
+       "      <td>Black</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>40</td>\n",
+       "      <td>United-States</td>\n",
+       "      <td>&lt;=50K</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2</td>\n",
+       "      <td>38</td>\n",
+       "      <td>Private</td>\n",
+       "      <td>89814</td>\n",
+       "      <td>HS-grad</td>\n",
+       "      <td>9</td>\n",
+       "      <td>Married-civ-spouse</td>\n",
+       "      <td>Farming-fishing</td>\n",
+       "      <td>Husband</td>\n",
+       "      <td>White</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>50</td>\n",
+       "      <td>United-States</td>\n",
+       "      <td>&lt;=50K</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>3</td>\n",
+       "      <td>28</td>\n",
+       "      <td>Local-gov</td>\n",
+       "      <td>336951</td>\n",
+       "      <td>Assoc-acdm</td>\n",
+       "      <td>12</td>\n",
+       "      <td>Married-civ-spouse</td>\n",
+       "      <td>Protective-serv</td>\n",
+       "      <td>Husband</td>\n",
+       "      <td>White</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>40</td>\n",
+       "      <td>United-States</td>\n",
+       "      <td>&gt;50K</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>4</td>\n",
+       "      <td>44</td>\n",
+       "      <td>Private</td>\n",
+       "      <td>160323</td>\n",
+       "      <td>Some-college</td>\n",
+       "      <td>10</td>\n",
+       "      <td>Married-civ-spouse</td>\n",
+       "      <td>Machine-op-inspct</td>\n",
+       "      <td>Husband</td>\n",
+       "      <td>Black</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>7688</td>\n",
+       "      <td>0</td>\n",
+       "      <td>40</td>\n",
+       "      <td>United-States</td>\n",
+       "      <td>&gt;50K</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>5</td>\n",
+       "      <td>18</td>\n",
+       "      <td>?</td>\n",
+       "      <td>103497</td>\n",
+       "      <td>Some-college</td>\n",
+       "      <td>10</td>\n",
+       "      <td>Never-married</td>\n",
+       "      <td>?</td>\n",
+       "      <td>Own-child</td>\n",
+       "      <td>White</td>\n",
+       "      <td>Female</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>30</td>\n",
+       "      <td>United-States</td>\n",
+       "      <td>&lt;=50K</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   index   0          1       2             3   4                   5  \\\n",
+       "0      1  25    Private  226802          11th   7       Never-married   \n",
+       "1      2  38    Private   89814       HS-grad   9  Married-civ-spouse   \n",
+       "2      3  28  Local-gov  336951    Assoc-acdm  12  Married-civ-spouse   \n",
+       "3      4  44    Private  160323  Some-college  10  Married-civ-spouse   \n",
+       "4      5  18          ?  103497  Some-college  10       Never-married   \n",
+       "\n",
+       "                   6          7      8       9    10 11  12             13  \\\n",
+       "0  Machine-op-inspct  Own-child  Black    Male     0  0  40  United-States   \n",
+       "1    Farming-fishing    Husband  White    Male     0  0  50  United-States   \n",
+       "2    Protective-serv    Husband  White    Male     0  0  40  United-States   \n",
+       "3  Machine-op-inspct    Husband  Black    Male  7688  0  40  United-States   \n",
+       "4                  ?  Own-child  White  Female     0  0  30  United-States   \n",
+       "\n",
+       "      14  \n",
+       "0  <=50K  \n",
+       "1  <=50K  \n",
+       "2   >50K  \n",
+       "3   >50K  \n",
+       "4  <=50K  "
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df1=df.drop([0],axis=0).reset_index()\n",
+    "df1.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "columns=[1,3,5,6,7,8,9,13]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>index</th>\n",
+       "      <th>0</th>\n",
+       "      <th>1</th>\n",
+       "      <th>2</th>\n",
+       "      <th>3</th>\n",
+       "      <th>4</th>\n",
+       "      <th>5</th>\n",
+       "      <th>6</th>\n",
+       "      <th>7</th>\n",
+       "      <th>8</th>\n",
+       "      <th>9</th>\n",
+       "      <th>10</th>\n",
+       "      <th>11</th>\n",
+       "      <th>12</th>\n",
+       "      <th>13</th>\n",
+       "      <th>14</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>1</td>\n",
+       "      <td>25</td>\n",
+       "      <td>Private</td>\n",
+       "      <td>226802</td>\n",
+       "      <td>11th</td>\n",
+       "      <td>7</td>\n",
+       "      <td>Never-married</td>\n",
+       "      <td>Machine-op-inspct</td>\n",
+       "      <td>Own-child</td>\n",
+       "      <td>Black</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>40</td>\n",
+       "      <td>United-States</td>\n",
+       "      <td>&lt;=50K</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2</td>\n",
+       "      <td>38</td>\n",
+       "      <td>Private</td>\n",
+       "      <td>89814</td>\n",
+       "      <td>HS-grad</td>\n",
+       "      <td>9</td>\n",
+       "      <td>Married-civ-spouse</td>\n",
+       "      <td>Farming-fishing</td>\n",
+       "      <td>Husband</td>\n",
+       "      <td>White</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>50</td>\n",
+       "      <td>United-States</td>\n",
+       "      <td>&lt;=50K</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>3</td>\n",
+       "      <td>28</td>\n",
+       "      <td>Local-gov</td>\n",
+       "      <td>336951</td>\n",
+       "      <td>Assoc-acdm</td>\n",
+       "      <td>12</td>\n",
+       "      <td>Married-civ-spouse</td>\n",
+       "      <td>Protective-serv</td>\n",
+       "      <td>Husband</td>\n",
+       "      <td>White</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>40</td>\n",
+       "      <td>United-States</td>\n",
+       "      <td>&gt;50K</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>4</td>\n",
+       "      <td>44</td>\n",
+       "      <td>Private</td>\n",
+       "      <td>160323</td>\n",
+       "      <td>Some-college</td>\n",
+       "      <td>10</td>\n",
+       "      <td>Married-civ-spouse</td>\n",
+       "      <td>Machine-op-inspct</td>\n",
+       "      <td>Husband</td>\n",
+       "      <td>Black</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>7688</td>\n",
+       "      <td>0</td>\n",
+       "      <td>40</td>\n",
+       "      <td>United-States</td>\n",
+       "      <td>&gt;50K</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>5</td>\n",
+       "      <td>18</td>\n",
+       "      <td>?</td>\n",
+       "      <td>103497</td>\n",
+       "      <td>Some-college</td>\n",
+       "      <td>10</td>\n",
+       "      <td>Never-married</td>\n",
+       "      <td>?</td>\n",
+       "      <td>Own-child</td>\n",
+       "      <td>White</td>\n",
+       "      <td>Female</td>\n",
+       "      <td>0</td>\n",
+       "      <td>0</td>\n",
+       "      <td>30</td>\n",
+       "      <td>United-States</td>\n",
+       "      <td>&lt;=50K</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   index   0          1       2             3   4                   5  \\\n",
+       "0      1  25    Private  226802          11th   7       Never-married   \n",
+       "1      2  38    Private   89814       HS-grad   9  Married-civ-spouse   \n",
+       "2      3  28  Local-gov  336951    Assoc-acdm  12  Married-civ-spouse   \n",
+       "3      4  44    Private  160323  Some-college  10  Married-civ-spouse   \n",
+       "4      5  18          ?  103497  Some-college  10       Never-married   \n",
+       "\n",
+       "                   6          7      8       9    10 11  12             13  \\\n",
+       "0  Machine-op-inspct  Own-child  Black    Male     0  0  40  United-States   \n",
+       "1    Farming-fishing    Husband  White    Male     0  0  50  United-States   \n",
+       "2    Protective-serv    Husband  White    Male     0  0  40  United-States   \n",
+       "3  Machine-op-inspct    Husband  Black    Male  7688  0  40  United-States   \n",
+       "4                  ?  Own-child  White  Female     0  0  30  United-States   \n",
+       "\n",
+       "      14  \n",
+       "0  <=50K  \n",
+       "1  <=50K  \n",
+       "2   >50K  \n",
+       "3   >50K  \n",
+       "4  <=50K  "
+      ]
+     },
+     "execution_count": 16,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df1.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>1</th>\n",
+       "      <th>3</th>\n",
+       "      <th>5</th>\n",
+       "      <th>6</th>\n",
+       "      <th>7</th>\n",
+       "      <th>8</th>\n",
+       "      <th>9</th>\n",
+       "      <th>13</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>Private</td>\n",
+       "      <td>11th</td>\n",
+       "      <td>Never-married</td>\n",
+       "      <td>Machine-op-inspct</td>\n",
+       "      <td>Own-child</td>\n",
+       "      <td>Black</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>United-States</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>Private</td>\n",
+       "      <td>HS-grad</td>\n",
+       "      <td>Married-civ-spouse</td>\n",
+       "      <td>Farming-fishing</td>\n",
+       "      <td>Husband</td>\n",
+       "      <td>White</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>United-States</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>Local-gov</td>\n",
+       "      <td>Assoc-acdm</td>\n",
+       "      <td>Married-civ-spouse</td>\n",
+       "      <td>Protective-serv</td>\n",
+       "      <td>Husband</td>\n",
+       "      <td>White</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>United-States</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>Private</td>\n",
+       "      <td>Some-college</td>\n",
+       "      <td>Married-civ-spouse</td>\n",
+       "      <td>Machine-op-inspct</td>\n",
+       "      <td>Husband</td>\n",
+       "      <td>Black</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>United-States</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>?</td>\n",
+       "      <td>Some-college</td>\n",
+       "      <td>Never-married</td>\n",
+       "      <td>?</td>\n",
+       "      <td>Own-child</td>\n",
+       "      <td>White</td>\n",
+       "      <td>Female</td>\n",
+       "      <td>United-States</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "          1             3                   5                  6          7   \\\n",
+       "0    Private          11th       Never-married  Machine-op-inspct  Own-child   \n",
+       "1    Private       HS-grad  Married-civ-spouse    Farming-fishing    Husband   \n",
+       "2  Local-gov    Assoc-acdm  Married-civ-spouse    Protective-serv    Husband   \n",
+       "3    Private  Some-college  Married-civ-spouse  Machine-op-inspct    Husband   \n",
+       "4          ?  Some-college       Never-married                  ?  Own-child   \n",
+       "\n",
+       "      8       9              13  \n",
+       "0  Black    Male  United-States  \n",
+       "1  White    Male  United-States  \n",
+       "2  White    Male  United-States  \n",
+       "3  Black    Male  United-States  \n",
+       "4  White  Female  United-States  "
+      ]
+     },
+     "execution_count": 17,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df2=df1[columns]\n",
+    "df2.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "16"
+      ]
+     },
+     "execution_count": 18,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df1.columns.nunique()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df2.columns=['workclass','education','marital-status','occupation','relationship','race','gender','native-country']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>workclass</th>\n",
+       "      <th>education</th>\n",
+       "      <th>marital-status</th>\n",
+       "      <th>occupation</th>\n",
+       "      <th>relationship</th>\n",
+       "      <th>race</th>\n",
+       "      <th>gender</th>\n",
+       "      <th>native-country</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>Private</td>\n",
+       "      <td>11th</td>\n",
+       "      <td>Never-married</td>\n",
+       "      <td>Machine-op-inspct</td>\n",
+       "      <td>Own-child</td>\n",
+       "      <td>Black</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>United-States</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>Private</td>\n",
+       "      <td>HS-grad</td>\n",
+       "      <td>Married-civ-spouse</td>\n",
+       "      <td>Farming-fishing</td>\n",
+       "      <td>Husband</td>\n",
+       "      <td>White</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>United-States</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>Local-gov</td>\n",
+       "      <td>Assoc-acdm</td>\n",
+       "      <td>Married-civ-spouse</td>\n",
+       "      <td>Protective-serv</td>\n",
+       "      <td>Husband</td>\n",
+       "      <td>White</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>United-States</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>Private</td>\n",
+       "      <td>Some-college</td>\n",
+       "      <td>Married-civ-spouse</td>\n",
+       "      <td>Machine-op-inspct</td>\n",
+       "      <td>Husband</td>\n",
+       "      <td>Black</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>United-States</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>?</td>\n",
+       "      <td>Some-college</td>\n",
+       "      <td>Never-married</td>\n",
+       "      <td>?</td>\n",
+       "      <td>Own-child</td>\n",
+       "      <td>White</td>\n",
+       "      <td>Female</td>\n",
+       "      <td>United-States</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   workclass     education      marital-status         occupation  \\\n",
+       "0    Private          11th       Never-married  Machine-op-inspct   \n",
+       "1    Private       HS-grad  Married-civ-spouse    Farming-fishing   \n",
+       "2  Local-gov    Assoc-acdm  Married-civ-spouse    Protective-serv   \n",
+       "3    Private  Some-college  Married-civ-spouse  Machine-op-inspct   \n",
+       "4          ?  Some-college       Never-married                  ?   \n",
+       "\n",
+       "  relationship   race  gender native-country  \n",
+       "0    Own-child  Black    Male  United-States  \n",
+       "1      Husband  White    Male  United-States  \n",
+       "2      Husband  White    Male  United-States  \n",
+       "3      Husband  Black    Male  United-States  \n",
+       "4    Own-child  White  Female  United-States  "
+      ]
+     },
+     "execution_count": 20,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df2.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "workclass : 9 labels\n",
+      "education : 16 labels\n",
+      "marital-status : 7 labels\n",
+      "occupation : 15 labels\n",
+      "relationship : 6 labels\n",
+      "race : 5 labels\n",
+      "gender : 2 labels\n",
+      "native-country : 42 labels\n"
+     ]
+    }
+   ],
+   "source": [
+    "for feature in df2.columns[:]:\n",
+    "    print(feature,':',len(df2[feature].unique()),'labels')"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "United-States                 43832\n",
+       "Mexico                          951\n",
+       "?                               857\n",
+       "Philippines                     295\n",
+       "Germany                         206\n",
+       "Puerto-Rico                     184\n",
+       "Canada                          182\n",
+       "El-Salvador                     155\n",
+       "India                           151\n",
+       "Cuba                            138\n",
+       "England                         127\n",
+       "China                           122\n",
+       "South                           115\n",
+       "Jamaica                         106\n",
+       "Italy                           105\n",
+       "Dominican-Republic              103\n",
+       "Japan                            92\n",
+       "Guatemala                        88\n",
+       "Poland                           87\n",
+       "Vietnam                          86\n",
+       "Columbia                         85\n",
+       "Haiti                            75\n",
+       "Portugal                         67\n",
+       "Taiwan                           65\n",
+       "Iran                             59\n",
+       "Greece                           49\n",
+       "Nicaragua                        49\n",
+       "Peru                             46\n",
+       "Ecuador                          45\n",
+       "France                           38\n",
+       "Ireland                          37\n",
+       "Thailand                         30\n",
+       "Hong                             30\n",
+       "Cambodia                         28\n",
+       "Trinadad&Tobago                  27\n",
+       "Laos                             23\n",
+       "Outlying-US(Guam-USVI-etc)       23\n",
+       "Yugoslavia                       23\n",
+       "Scotland                         21\n",
+       "Honduras                         20\n",
+       "Hungary                          19\n",
+       "Holand-Netherlands                1\n",
+       "Name: native-country, dtype: int64"
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df2['native-country'].value_counts()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{'United-States': 43832,\n",
+       " 'Mexico': 951,\n",
+       " '?': 857,\n",
+       " 'Philippines': 295,\n",
+       " 'Germany': 206,\n",
+       " 'Puerto-Rico': 184,\n",
+       " 'Canada': 182,\n",
+       " 'El-Salvador': 155,\n",
+       " 'India': 151,\n",
+       " 'Cuba': 138,\n",
+       " 'England': 127,\n",
+       " 'China': 122,\n",
+       " 'South': 115,\n",
+       " 'Jamaica': 106,\n",
+       " 'Italy': 105,\n",
+       " 'Dominican-Republic': 103,\n",
+       " 'Japan': 92,\n",
+       " 'Guatemala': 88,\n",
+       " 'Poland': 87,\n",
+       " 'Vietnam': 86,\n",
+       " 'Columbia': 85,\n",
+       " 'Haiti': 75,\n",
+       " 'Portugal': 67,\n",
+       " 'Taiwan': 65,\n",
+       " 'Iran': 59,\n",
+       " 'Greece': 49,\n",
+       " 'Nicaragua': 49,\n",
+       " 'Peru': 46,\n",
+       " 'Ecuador': 45,\n",
+       " 'France': 38,\n",
+       " 'Ireland': 37,\n",
+       " 'Thailand': 30,\n",
+       " 'Hong': 30,\n",
+       " 'Cambodia': 28,\n",
+       " 'Trinadad&Tobago': 27,\n",
+       " 'Laos': 23,\n",
+       " 'Outlying-US(Guam-USVI-etc)': 23,\n",
+       " 'Yugoslavia': 23,\n",
+       " 'Scotland': 21,\n",
+       " 'Honduras': 20,\n",
+       " 'Hungary': 19,\n",
+       " 'Holand-Netherlands': 1}"
+      ]
+     },
+     "execution_count": 23,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df2['native-country'].value_counts().to_dict()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "<ipython-input-24-dc733162f191>:2: SettingWithCopyWarning: \n",
+      "A value is trying to be set on a copy of a slice from a DataFrame.\n",
+      "Try using .loc[row_indexer,col_indexer] = value instead\n",
+      "\n",
+      "See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy\n",
+      "  df2['native-country']=df2['native-country'].map(country_map)\n"
+     ]
+    },
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>workclass</th>\n",
+       "      <th>education</th>\n",
+       "      <th>marital-status</th>\n",
+       "      <th>occupation</th>\n",
+       "      <th>relationship</th>\n",
+       "      <th>race</th>\n",
+       "      <th>gender</th>\n",
+       "      <th>native-country</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>Private</td>\n",
+       "      <td>11th</td>\n",
+       "      <td>Never-married</td>\n",
+       "      <td>Machine-op-inspct</td>\n",
+       "      <td>Own-child</td>\n",
+       "      <td>Black</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>43832</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>Private</td>\n",
+       "      <td>HS-grad</td>\n",
+       "      <td>Married-civ-spouse</td>\n",
+       "      <td>Farming-fishing</td>\n",
+       "      <td>Husband</td>\n",
+       "      <td>White</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>43832</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>Local-gov</td>\n",
+       "      <td>Assoc-acdm</td>\n",
+       "      <td>Married-civ-spouse</td>\n",
+       "      <td>Protective-serv</td>\n",
+       "      <td>Husband</td>\n",
+       "      <td>White</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>43832</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>Private</td>\n",
+       "      <td>Some-college</td>\n",
+       "      <td>Married-civ-spouse</td>\n",
+       "      <td>Machine-op-inspct</td>\n",
+       "      <td>Husband</td>\n",
+       "      <td>Black</td>\n",
+       "      <td>Male</td>\n",
+       "      <td>43832</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>?</td>\n",
+       "      <td>Some-college</td>\n",
+       "      <td>Never-married</td>\n",
+       "      <td>?</td>\n",
+       "      <td>Own-child</td>\n",
+       "      <td>White</td>\n",
+       "      <td>Female</td>\n",
+       "      <td>43832</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   workclass     education      marital-status         occupation  \\\n",
+       "0    Private          11th       Never-married  Machine-op-inspct   \n",
+       "1    Private       HS-grad  Married-civ-spouse    Farming-fishing   \n",
+       "2  Local-gov    Assoc-acdm  Married-civ-spouse    Protective-serv   \n",
+       "3    Private  Some-college  Married-civ-spouse  Machine-op-inspct   \n",
+       "4          ?  Some-college       Never-married                  ?   \n",
+       "\n",
+       "  relationship   race  gender  native-country  \n",
+       "0    Own-child  Black    Male           43832  \n",
+       "1      Husband  White    Male           43832  \n",
+       "2      Husband  White    Male           43832  \n",
+       "3      Husband  Black    Male           43832  \n",
+       "4    Own-child  White  Female           43832  "
+      ]
+     },
+     "execution_count": 24,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "country_map=df2['native-country'].value_counts().to_dict()\n",
+    "df2['native-country']=df2['native-country'].map(country_map)\n",
+    "df2.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "###  Pros;\n",
+    "1. Easy to use\n",
+    "2. Does not increase feature space\n",
+    "### Cons;\n",
+    "1. Provides same weight if frequencies are same"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Target Guided Ordinal Encoding\n",
+    "1. Ordering the labels according to the target\n",
+    "2.replace the labels by the joing probability of being 1 or 0"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Survived</th>\n",
+       "      <th>Cabin</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>0</td>\n",
+       "      <td>NaN</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>1</td>\n",
+       "      <td>C85</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>1</td>\n",
+       "      <td>NaN</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>1</td>\n",
+       "      <td>C123</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>0</td>\n",
+       "      <td>NaN</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   Survived Cabin\n",
+       "0         0   NaN\n",
+       "1         1   C85\n",
+       "2         1   NaN\n",
+       "3         1  C123\n",
+       "4         0   NaN"
+      ]
+     },
+     "execution_count": 25,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "import pandas as pd\n",
+    "df=pd.read_csv(\"Titanic dataset-train.csv\",usecols=['Cabin','Survived'])\n",
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df['Cabin'].fillna('Missing',inplace=True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Survived</th>\n",
+       "      <th>Cabin</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>0</td>\n",
+       "      <td>Missing</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>1</td>\n",
+       "      <td>C85</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>1</td>\n",
+       "      <td>Missing</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>1</td>\n",
+       "      <td>C123</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>0</td>\n",
+       "      <td>Missing</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   Survived    Cabin\n",
+       "0         0  Missing\n",
+       "1         1      C85\n",
+       "2         1  Missing\n",
+       "3         1     C123\n",
+       "4         0  Missing"
+      ]
+     },
+     "execution_count": 27,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df['Cabin']=df['Cabin'].astype(str).str[0]"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Survived</th>\n",
+       "      <th>Cabin</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>0</td>\n",
+       "      <td>M</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>1</td>\n",
+       "      <td>C</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>1</td>\n",
+       "      <td>M</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>1</td>\n",
+       "      <td>C</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>0</td>\n",
+       "      <td>M</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   Survived Cabin\n",
+       "0         0     M\n",
+       "1         1     C\n",
+       "2         1     M\n",
+       "3         1     C\n",
+       "4         0     M"
+      ]
+     },
+     "execution_count": 29,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "array(['M', 'C', 'E', 'G', 'D', 'A', 'B', 'F', 'T'], dtype=object)"
+      ]
+     },
+     "execution_count": 30,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.Cabin.unique()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Cabin\n",
+       "A    0.466667\n",
+       "B    0.744681\n",
+       "C    0.593220\n",
+       "D    0.757576\n",
+       "E    0.750000\n",
+       "F    0.615385\n",
+       "G    0.500000\n",
+       "M    0.299854\n",
+       "T    0.000000\n",
+       "Name: Survived, dtype: float64"
+      ]
+     },
+     "execution_count": 31,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.groupby(['Cabin'])['Survived'].mean()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 32,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Cabin\n",
+       "T    0.000000\n",
+       "M    0.299854\n",
+       "A    0.466667\n",
+       "G    0.500000\n",
+       "C    0.593220\n",
+       "F    0.615385\n",
+       "B    0.744681\n",
+       "E    0.750000\n",
+       "D    0.757576\n",
+       "Name: Survived, dtype: float64"
+      ]
+     },
+     "execution_count": 32,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.groupby(['Cabin'])['Survived'].mean().sort_values(ascending=True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Index(['T', 'M', 'A', 'G', 'C', 'F', 'B', 'E', 'D'], dtype='object', name='Cabin')"
+      ]
+     },
+     "execution_count": 33,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.groupby(['Cabin'])['Survived'].mean().sort_values().index"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Index(['T', 'M', 'A', 'G', 'C', 'F', 'B', 'E', 'D'], dtype='object', name='Cabin')"
+      ]
+     },
+     "execution_count": 34,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "ordinal_labels=df.groupby(['Cabin'])['Survived'].mean().sort_values().index\n",
+    "ordinal_labels"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 35,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['T', 'M', 'A', 'G', 'C', 'F', 'B', 'E', 'D']"
+      ]
+     },
+     "execution_count": 35,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "list(ordinal_labels)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 36,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<enumerate at 0x132cae7f980>"
+      ]
+     },
+     "execution_count": 36,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "enumerate(ordinal_labels,0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 37,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{'T': 0, 'M': 1, 'A': 2, 'G': 3, 'C': 4, 'F': 5, 'B': 6, 'E': 7, 'D': 8}"
+      ]
+     },
+     "execution_count": 37,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "ordinal_labels2={k:i for i,k in enumerate(ordinal_labels,0)}\n",
+    "ordinal_labels2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 38,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Survived</th>\n",
+       "      <th>Cabin</th>\n",
+       "      <th>cabin_ordinal_labels</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>0</td>\n",
+       "      <td>M</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>1</td>\n",
+       "      <td>C</td>\n",
+       "      <td>4</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>1</td>\n",
+       "      <td>M</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>1</td>\n",
+       "      <td>C</td>\n",
+       "      <td>4</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>0</td>\n",
+       "      <td>M</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   Survived Cabin  cabin_ordinal_labels\n",
+       "0         0     M                     1\n",
+       "1         1     C                     4\n",
+       "2         1     M                     1\n",
+       "3         1     C                     4\n",
+       "4         0     M                     1"
+      ]
+     },
+     "execution_count": 38,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['cabin_ordinal_labels']=df['Cabin'].map(ordinal_labels2)\n",
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 39,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Survived</th>\n",
+       "      <th>cabin_ordinal_labels</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>0</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>1</td>\n",
+       "      <td>4</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>1</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>1</td>\n",
+       "      <td>4</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>0</td>\n",
+       "      <td>1</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   Survived  cabin_ordinal_labels\n",
+       "0         0                     1\n",
+       "1         1                     4\n",
+       "2         1                     1\n",
+       "3         1                     4\n",
+       "4         0                     1"
+      ]
+     },
+     "execution_count": 39,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.drop(['Cabin'],axis=1).head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Mean Encoding"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 40,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "mean_ordinal=df.groupby(['Cabin'])['Survived'].mean().to_dict()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "{'A': 0.4666666666666667,\n",
+       " 'B': 0.7446808510638298,\n",
+       " 'C': 0.5932203389830508,\n",
+       " 'D': 0.7575757575757576,\n",
+       " 'E': 0.75,\n",
+       " 'F': 0.6153846153846154,\n",
+       " 'G': 0.5,\n",
+       " 'M': 0.29985443959243085,\n",
+       " 'T': 0.0}"
+      ]
+     },
+     "execution_count": 41,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "mean_ordinal"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Survived</th>\n",
+       "      <th>Cabin</th>\n",
+       "      <th>cabin_ordinal_labels</th>\n",
+       "      <th>mean_ordinal_encode</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>0</td>\n",
+       "      <td>M</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0.299854</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>1</td>\n",
+       "      <td>C</td>\n",
+       "      <td>4</td>\n",
+       "      <td>0.593220</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>1</td>\n",
+       "      <td>M</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0.299854</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>1</td>\n",
+       "      <td>C</td>\n",
+       "      <td>4</td>\n",
+       "      <td>0.593220</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>0</td>\n",
+       "      <td>M</td>\n",
+       "      <td>1</td>\n",
+       "      <td>0.299854</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   Survived Cabin  cabin_ordinal_labels  mean_ordinal_encode\n",
+       "0         0     M                     1             0.299854\n",
+       "1         1     C                     4             0.593220\n",
+       "2         1     M                     1             0.299854\n",
+       "3         1     C                     4             0.593220\n",
+       "4         0     M                     1             0.299854"
+      ]
+     },
+     "execution_count": 42,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['mean_ordinal_encode']=df['Cabin'].map(mean_ordinal)\n",
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 43,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "dtype('int64')"
+      ]
+     },
+     "execution_count": 43,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['cabin_ordinal_labels'].dtypes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 44,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "dtype('int64')"
+      ]
+     },
+     "execution_count": 44,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.cabin_ordinal_labels.dtypes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 45,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "dtype('int64')"
+      ]
+     },
+     "execution_count": 45,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['cabin_ordinal_labels'].dtypes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 46,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Survived                  int64\n",
+       "Cabin                    object\n",
+       "cabin_ordinal_labels      int64\n",
+       "mean_ordinal_encode     float64\n",
+       "dtype: object"
+      ]
+     },
+     "execution_count": 46,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.dtypes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 47,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "3.5"
+      ]
+     },
+     "execution_count": 47,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "14/4"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### Finds the remainder after division"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 48,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "2"
+      ]
+     },
+     "execution_count": 48,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "14%4"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 49,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "6"
+      ]
+     },
+     "execution_count": 49,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "6%8"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 50,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0"
+      ]
+     },
+     "execution_count": 50,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "20%5"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.8.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
